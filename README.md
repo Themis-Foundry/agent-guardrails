@@ -60,8 +60,6 @@ text contained an example spoofed URL beside the literal string `-d`. Fail-close
 false positives. That is exactly the trade the other seven rules refuse to make, and it is why only
 Rules 8 and 9 get to make it.
 
-**Fail-open, always, for the other seven.** Any parse error, missing dependency, or unmatched input allows the command. The hook is shared across concurrent sessions, so a buggy guard must never be able to freeze a parallel chat. A guard that can break your workflow gets deleted within a week. A guard that only ever blocks explicit, matched dangerous patterns gets to stay forever.
-
 **Command-start anchoring.** The naive regex blocks `git commit -m "stop using git add -A"`, which is a commit message *about* the rule. The guard requires the dangerous invocation to actually begin a command (start of string or right after `;` `&` `|` `(`). Trade-off: an env-prefixed `FOO=bar git add .` slips through. Fail-open means accepting rare misses to guarantee zero false positives.
 
 **Heredoc stripping.** The expensive false positive: a Python heredoc containing `var mv := Camera.new()` next to the string `"scripts/core/foo.gd"` reads to a naive scanner as `mv` touching a protected `scripts/` directory. The guard strips heredoc bodies before scanning for rm/mv, while converting newlines to `;` so a real `rm -rf scripts/x` on its own script line still blocks. That fix is most of the complexity in the file, and it's tested in both directions.
@@ -130,9 +128,9 @@ Full write-ups with the incident behind each rule: [rules/](rules/).
 
 ## Who made this
 
-Kyle Miller. I build AI systems that run real businesses: e-commerce automation, internal tools, content engines. This repo is a piece of my actual operating setup, extracted and cleaned up. The business logic stays home.
+Kyle Miller. I build AI systems that run real businesses: e-commerce automation, internal tools, content engines. This repo is a piece of my actual operating setup, extracted and cleaned up. The business logic stays home. I specify, test and verify; the code is written by AI coding agents under my direction.
 
-[themisfoundry.com](https://themisfoundry.com)
+More: [linkedin.com/in/kylemillerfl](https://www.linkedin.com/in/kylemillerfl)
 
 ## License
 
