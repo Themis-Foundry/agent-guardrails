@@ -51,14 +51,15 @@ almost always exfiltration, which needs an outbound network call, which makes ou
 chokepoint. Against an adversary, "allow when unsure" is the whole vulnerability. So Rule 8's
 decision fails closed, and the hook flips its own `ERR` trap for the length of that block, because
 the file-wide `trap allow ERR` would otherwise swallow an error inside the egress check into a
-silent allow and make the claim false.
+silent allow and make the claim false. Rule 9 (private key material) is written up in
+[rules/](rules/) with the same fail-closed design, but this repo's `guard.sh` does not enforce it yet.
 
 The cost is real and I am not going to hide it. Rule 8 has no heredoc stripping, so a heredoc that
 merely *discusses* an upload flag next to an unlisted URL trips it. I found that out when the patch
 adding Rule 8 to this repo was blocked by Rule 8 already running on my machine, because the patch
 text contained an example spoofed URL beside the literal string `-d`. Fail-closed means accepting
 false positives. That is exactly the trade the other seven rules refuse to make, and it is why only
-Rules 8 and 9 get to make it.
+the two adversarial rules get to make it.
 
 **Command-start anchoring.** The naive regex blocks `git commit -m "stop using git add -A"`, which is a commit message *about* the rule. The guard requires the dangerous invocation to actually begin a command (start of string or right after `;` `&` `|` `(`). Trade-off: an env-prefixed `FOO=bar git add .` slips through. Fail-open means accepting rare misses to guarantee zero false positives.
 
@@ -84,7 +85,7 @@ When the guard fires, it returns a deny decision with the reason:
 $ git add -A
 {"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny",
 "permissionDecisionReason":"Blocked by Rule 2: no broad 'git add' (-A / --all / bare '.').
-Stage specific named files instead (git add path/to/file) — a shared tree often carries
+Stage specific named files instead (git add path/to/file). A shared tree often carries
 dirty files from parallel sessions. See rules/02-no-broad-git-adds.md."}}
 ```
 
@@ -128,9 +129,9 @@ Full write-ups with the incident behind each rule: [rules/](rules/).
 
 ## Who made this
 
-Kyle Miller. I build AI systems that run real businesses: e-commerce automation, internal tools, content engines. This repo is a piece of my actual operating setup, extracted and cleaned up. The business logic stays home. I specify, test and verify; the code is written by AI coding agents under my direction.
+Kyle Miller. I design systems where AI agents do the building and a separate check decides whether the work counts. I write the rules and decide what the tests must prove; AI coding agents write the code. This repo is a piece of my own operating setup, extracted and cleaned up; the business logic stays home.
 
-More: [linkedin.com/in/kylemillerfl](https://www.linkedin.com/in/kylemillerfl)
+[themisfoundry.com](https://themisfoundry.com) · [LinkedIn](https://www.linkedin.com/in/kylemillerfl) · [more tools](https://github.com/kylemillerbuilds)
 
 ## License
 

@@ -1,4 +1,4 @@
-# Rule 8 — Outbound egress goes through an allowlist
+# Rule 8: Outbound egress goes through an allowlist
 
 **A `curl`/`wget` to a host that is not on the allowlist does not run silently.** An unlisted host
 raises a permission prompt naming the host. An upload flag (`-d`, `--data`, `-F`, `-T`,
@@ -47,7 +47,7 @@ A command-line egress check inspects literal shell commands before `Bash` execut
 1. **Non-shell network tools.** Built-in web fetchers and MCP servers do not route through `Bash`; scope or allowlist those tools in the harness configuration alongside the shell hook.
 2. **Programmatic network calls.** A command-line check sees URLs present in the shell invocation, not sockets opened inside a script or dependency. Use OS-level sandbox profiles or runtime audit hooks when code itself needs network containment.
 3. **In-place corruption and false reporting.** Egress rules address network exfiltration; pair them with independent on-disk verification (Rule 7) to catch an injection that alters local state or fabricates a report.
-4. **No heredoc stripping, unlike Rule 3.** A heredoc body that merely *discusses* an upload flag next to an unlisted URL — documentation, a test fixture, or this file — reads as a live flag and triggers the rule. Fail-closed means accepting false positives on literal text so that multi-line shell payloads cannot smuggle an upload past the check.
+4. **No heredoc stripping, unlike Rule 3.** A heredoc body that merely *discusses* an upload flag next to an unlisted URL (documentation, a test fixture, or this file) reads as a live flag and triggers the rule. Fail-closed means accepting false positives on literal text so that multi-line shell payloads cannot smuggle an upload past the check.
 
 ## The durable boundary does not depend on this hook
 

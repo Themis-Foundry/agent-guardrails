@@ -1,4 +1,4 @@
-# Rule 2 — No broad git adds, no massive commits
+# Rule 2: No broad git adds, no massive commits
 
 **Never `git add -A` / `git add .` / `git add --all`, and never `git commit -a` / `-am` / `--all`.** Stage specific named files in coherent sets.
 

@@ -1,4 +1,4 @@
-# Rule 5 — Read logs before guessing
+# Rule 5: Read logs before guessing
 
 **When tooling breaks, the agent reads the actual log file before attempting any fix.** Write the log path into the rule so nobody has to find it under pressure.
 

@@ -1,4 +1,4 @@
-# Rule 6 — Config changes are reversible or they don't happen
+# Rule 6: Config changes are reversible or they don't happen
 
 **Every config change must be reversible, and the agent documents what changed so it can be undone.**
 
